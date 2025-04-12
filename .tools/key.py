@@ -4,33 +4,29 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import rsa
 from datetime import datetime, timedelta, UTC
 
-# 1. 비밀 키 생성
+# 1. RSA 개인 키 생성
 key = rsa.generate_private_key(
     public_exponent=65537,
     key_size=2048,
 )
 
-# 2. 인증서 주체 정보
+# 2. 인증서 주체 정보 (샘플 정보)
 subject = issuer = x509.Name(
     [
-        x509.NameAttribute(NameOID.COUNTRY_NAME, "KR"),
-        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Seoul"),
-        x509.NameAttribute(NameOID.LOCALITY_NAME, "Seoul"),
-        x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Quirka Games"),
-        x509.NameAttribute(NameOID.COMMON_NAME, "quirkagames.com"),
+        x509.NameAttribute(NameOID.COUNTRY_NAME, "XX"),
+        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Local"),
+        x509.NameAttribute(NameOID.LOCALITY_NAME, "Localhost"),
+        x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Dev Organization"),
+        x509.NameAttribute(NameOID.COMMON_NAME, "localhost"),
     ]
 )
 
 now = datetime.now(UTC)
 
-# 3. SAN에 들어갈 여러 도메인
+# 3. SAN (Subject Alternative Names) — 여러 도메인 지원
 alt_names = [
-    x509.DNSName("quirkagames.com"),
-    x509.DNSName("www.quirkagames.com"),
-    x509.DNSName("dev.quirkagames.com"),
-    x509.DNSName("api.quirkagames.com"),
-    x509.DNSName("staging.quirkagames.com"),
     x509.DNSName("localhost"),
+    x509.DNSName("127.0.0.1"),
 ]
 
 # 4. 인증서 빌드
@@ -49,7 +45,7 @@ cert = (
     .sign(key, hashes.SHA256())
 )
 
-# 5. 파일로 저장
+# 5. 인증서 및 키 파일 저장
 with open("key.pem", "wb") as f:
     f.write(
         key.private_bytes(
@@ -62,6 +58,6 @@ with open("key.pem", "wb") as f:
 with open("cert.pem", "wb") as f:
     f.write(cert.public_bytes(serialization.Encoding.PEM))
 
-print("✅ 인증서가 다음 도메인으로 생성되었습니다:")
+print("✅ 개발용 인증서 생성 완료:")
 for name in alt_names:
     print(" -", name.value)
