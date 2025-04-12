@@ -47,3 +47,9 @@ _FTPS 서버가 정상적으로 실행되고 있는 모습입니다._
 | 🐳 Docker 배포 자동화                             | ⏳ 예정 |
 
 ---
+
+## 라이센스
+
+이 프로젝트는 MIT 라이센스를 따릅니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
